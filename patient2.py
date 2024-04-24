@@ -26,11 +26,21 @@ def app():
 
     
     # Plotting
-    st.subheader('COVID-19 Cases Summary')
+    st.subheader('COVID-19 Cases Summary')  
     fig, ax = plt.subplots(figsize=(10, 6))
     categories = ['Active', 'Discharged', 'Deaths']
     counts = [state_data['active'].values[0], state_data['passive'].values[0], state_data['deaths'].values[0]]
-    ax.bar(categories, counts, color=['blue', 'green', 'red'])
+    bars = ax.bar(categories, counts, color=['blue', 'green', 'red'])
+
+    # Add count labels to each bar
+    for bar, count in zip(bars, counts):
+        height = bar.get_height()
+        ax.annotate(f'{count}', xy=(bar.get_x() + bar.get_width() / 2, height),
+                xytext=(0, 3),  # 3 points vertical offset
+                textcoords="offset points",
+                ha='center', va='bottom')
+
     ax.set_title(f'COVID-19 Cases in {select}')
     ax.set_ylabel('Count')
     st.pyplot(fig)
+
